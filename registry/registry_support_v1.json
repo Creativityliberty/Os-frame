@@ -1,0 +1,554 @@
+{
+  "registry_id": "reg_support_v1",
+  "schema_version": "1.0.0",
+  "generated_at": "2026-01-31T22:09:48.855127+00:00",
+  "retry_classes": [
+    {
+      "type": "retry_class",
+      "id": "none",
+      "description": "No retry",
+      "max_attempts": 1,
+      "backoff_ms": [],
+      "retry_on": []
+    },
+    {
+      "type": "retry_class",
+      "id": "fast_internal",
+      "description": "Fast internal",
+      "max_attempts": 3,
+      "backoff_ms": [
+        100,
+        300,
+        800
+      ],
+      "retry_on": [
+        "TRANSIENT",
+        "UPSTREAM",
+        "TIMEOUT"
+      ]
+    },
+    {
+      "type": "retry_class",
+      "id": "standard_http",
+      "description": "Standard HTTP",
+      "max_attempts": 5,
+      "backoff_ms": [
+        200,
+        800,
+        2000,
+        5000,
+        12000
+      ],
+      "retry_on": [
+        "RATE_LIMIT",
+        "TIMEOUT",
+        "UPSTREAM",
+        "TRANSIENT"
+      ]
+    },
+    {
+      "type": "retry_class",
+      "id": "aggressive_external",
+      "description": "Aggressive external",
+      "max_attempts": 8,
+      "backoff_ms": [
+        300,
+        1200,
+        3000,
+        7000,
+        15000,
+        30000,
+        60000,
+        90000
+      ],
+      "retry_on": [
+        "RATE_LIMIT",
+        "TIMEOUT",
+        "UPSTREAM",
+        "TRANSIENT"
+      ]
+    },
+    {
+      "type": "retry_class",
+      "id": "conflict_resolver",
+      "description": "409 conflicts",
+      "max_attempts": 6,
+      "backoff_ms": [
+        100,
+        250,
+        600,
+        1200,
+        2500,
+        5000
+      ],
+      "retry_on": [
+        "CONFLICT",
+        "TRANSIENT",
+        "UPSTREAM"
+      ]
+    },
+    {
+      "type": "retry_class",
+      "id": "human_required",
+      "description": "Convert to input-required",
+      "max_attempts": 1,
+      "backoff_ms": [],
+      "retry_on": []
+    }
+  ],
+  "tool_contracts": [
+    {
+      "type": "tool_contract",
+      "tool": "crm.get_customer",
+      "version": "1.1.0",
+      "input_schema": {
+        "customer_id": "string"
+      },
+      "output_schema": {
+        "id": "string",
+        "name": "string",
+        "email": "string"
+      },
+      "errors": [
+        "AUTH",
+        "PERMISSION",
+        "VALIDATION",
+        "NOT_FOUND",
+        "RATE_LIMIT",
+        "UPSTREAM",
+        "TIMEOUT",
+        "TRANSIENT"
+      ],
+      "policy": {
+        "requires_approval": false,
+        "risk": "low",
+        "pii": "medium"
+      },
+      "auth": {
+        "type": "oauth2",
+        "scopes": [
+          "crm.read"
+        ]
+      }
+    },
+    {
+      "type": "tool_contract",
+      "tool": "memory.search",
+      "version": "1.0.0",
+      "input_schema": {
+        "query": "string",
+        "top_k": "integer"
+      },
+      "output_schema": {
+        "matches": "array"
+      },
+      "errors": [
+        "VALIDATION",
+        "UPSTREAM",
+        "TIMEOUT",
+        "TRANSIENT"
+      ],
+      "policy": {
+        "requires_approval": false,
+        "risk": "low",
+        "pii": "low"
+      },
+      "auth": {
+        "type": "none",
+        "scopes": []
+      }
+    },
+    {
+      "type": "tool_contract",
+      "tool": "ticket.create",
+      "version": "2.0.0",
+      "input_schema": {
+        "customer_id": "string",
+        "subject": "string",
+        "description": "string",
+        "priority": "string",
+        "idempotency_key": "string?"
+      },
+      "output_schema": {
+        "ticket_id": "string",
+        "status": "string"
+      },
+      "errors": [
+        "AUTH",
+        "PERMISSION",
+        "VALIDATION",
+        "RATE_LIMIT",
+        "CONFLICT",
+        "UPSTREAM",
+        "TIMEOUT",
+        "TRANSIENT"
+      ],
+      "policy": {
+        "requires_approval": false,
+        "risk": "medium",
+        "pii": "medium"
+      },
+      "auth": {
+        "type": "oauth2",
+        "scopes": [
+          "ticket.create"
+        ]
+      }
+    },
+    {
+      "type": "tool_contract",
+      "tool": "ticket.add_comment",
+      "version": "2.0.0",
+      "input_schema": {
+        "ticket_id": "string",
+        "comment": "string",
+        "public": "boolean",
+        "idempotency_key": "string?"
+      },
+      "output_schema": {
+        "comment_id": "string",
+        "status": "string"
+      },
+      "errors": [
+        "AUTH",
+        "PERMISSION",
+        "VALIDATION",
+        "NOT_FOUND",
+        "RATE_LIMIT",
+        "CONFLICT",
+        "UPSTREAM",
+        "TIMEOUT",
+        "TRANSIENT"
+      ],
+      "policy": {
+        "requires_approval": false,
+        "risk": "medium",
+        "pii": "medium"
+      },
+      "auth": {
+        "type": "oauth2",
+        "scopes": [
+          "ticket.write"
+        ]
+      }
+    },
+    {
+      "type": "tool_contract",
+      "tool": "email.send",
+      "version": "1.0.0",
+      "input_schema": {
+        "to": "string",
+        "subject": "string",
+        "body": "string",
+        "idempotency_key": "string?"
+      },
+      "output_schema": {
+        "message_id": "string",
+        "status": "string"
+      },
+      "errors": [
+        "AUTH",
+        "PERMISSION",
+        "VALIDATION",
+        "RATE_LIMIT",
+        "UPSTREAM",
+        "TIMEOUT",
+        "TRANSIENT"
+      ],
+      "policy": {
+        "requires_approval": false,
+        "risk": "medium",
+        "pii": "medium"
+      },
+      "auth": {
+        "type": "oauth2",
+        "scopes": [
+          "email.send"
+        ]
+      }
+    },
+    {
+      "type": "tool_contract",
+      "tool": "internal.llm.draft_reply",
+      "version": "1.0.0",
+      "input_schema": {
+        "language": "string",
+        "tone": "string",
+        "facts": "object",
+        "policy_snippets": "array?",
+        "constraints": "object?"
+      },
+      "output_schema": {
+        "subject": "string",
+        "body": "string"
+      },
+      "errors": [
+        "VALIDATION",
+        "TIMEOUT",
+        "UPSTREAM",
+        "TRANSIENT"
+      ],
+      "policy": {
+        "requires_approval": false,
+        "risk": "low",
+        "pii": "medium"
+      },
+      "auth": {
+        "type": "none",
+        "scopes": []
+      }
+    }
+  ],
+  "actions": [
+    {
+      "type": "action_spec",
+      "action_id": "act_crm_get_customer_v1",
+      "display_name": "Get customer",
+      "tool": "crm.get_customer",
+      "tool_version_range": ">=1.1.0 <2.0.0",
+      "timeout_ms": 8000,
+      "retry_class": "standard_http",
+      "idempotency": {
+        "mode": "hash_args",
+        "scope": "run"
+      },
+      "effects": [
+        "CustomerProfileRetrieved"
+      ],
+      "risk": "low",
+      "security": {
+        "allowed_roles": [
+          "support_agent",
+          "ops_admin"
+        ],
+        "requires_approval": false
+      },
+      "deprecation": {
+        "status": "active",
+        "replaced_by": null
+      }
+    },
+    {
+      "type": "action_spec",
+      "action_id": "act_memory_search_v1",
+      "display_name": "Search KB",
+      "tool": "memory.search",
+      "tool_version_range": ">=1.0.0 <2.0.0",
+      "timeout_ms": 6000,
+      "retry_class": "fast_internal",
+      "idempotency": {
+        "mode": "hash_args",
+        "scope": "run"
+      },
+      "effects": [
+        "KnowledgeSnippetsRetrieved"
+      ],
+      "risk": "low",
+      "security": {
+        "allowed_roles": [
+          "support_agent",
+          "ops_admin"
+        ],
+        "requires_approval": false
+      },
+      "deprecation": {
+        "status": "active",
+        "replaced_by": null
+      }
+    },
+    {
+      "type": "action_spec",
+      "action_id": "act_ticket_create_v1",
+      "display_name": "Create ticket",
+      "tool": "ticket.create",
+      "tool_version_range": ">=2.0.0 <3.0.0",
+      "timeout_ms": 15000,
+      "retry_class": "standard_http",
+      "idempotency": {
+        "mode": "explicit_key",
+        "scope": "tenant",
+        "key_path": "/idempotency_key"
+      },
+      "effects": [
+        "TicketCreated"
+      ],
+      "risk": "medium",
+      "security": {
+        "allowed_roles": [
+          "support_agent",
+          "ops_admin"
+        ],
+        "requires_approval": false
+      },
+      "deprecation": {
+        "status": "active",
+        "replaced_by": null
+      }
+    },
+    {
+      "type": "action_spec",
+      "action_id": "act_ticket_add_comment_v1",
+      "display_name": "Add comment",
+      "tool": "ticket.add_comment",
+      "tool_version_range": ">=2.0.0 <3.0.0",
+      "timeout_ms": 12000,
+      "retry_class": "conflict_resolver",
+      "idempotency": {
+        "mode": "explicit_key",
+        "scope": "tenant",
+        "key_path": "/idempotency_key"
+      },
+      "effects": [
+        "TicketCommentAdded"
+      ],
+      "risk": "medium",
+      "security": {
+        "allowed_roles": [
+          "support_agent",
+          "ops_admin"
+        ],
+        "requires_approval": false
+      },
+      "deprecation": {
+        "status": "active",
+        "replaced_by": null
+      }
+    },
+    {
+      "type": "action_spec",
+      "action_id": "act_draft_reply_v1",
+      "display_name": "Draft reply",
+      "tool": "internal.llm.draft_reply",
+      "tool_version_range": ">=1.0.0 <2.0.0",
+      "timeout_ms": 12000,
+      "retry_class": "fast_internal",
+      "idempotency": {
+        "mode": "hash_args",
+        "scope": "run"
+      },
+      "effects": [
+        "ReplyDrafted"
+      ],
+      "risk": "low",
+      "security": {
+        "allowed_roles": [
+          "support_agent",
+          "ops_admin",
+          "system"
+        ],
+        "requires_approval": false
+      },
+      "deprecation": {
+        "status": "active",
+        "replaced_by": null
+      }
+    },
+    {
+      "type": "action_spec",
+      "action_id": "act_email_send_v1",
+      "display_name": "Send email",
+      "tool": "email.send",
+      "tool_version_range": ">=1.0.0 <2.0.0",
+      "timeout_ms": 20000,
+      "retry_class": "aggressive_external",
+      "idempotency": {
+        "mode": "explicit_key",
+        "scope": "tenant",
+        "key_path": "/idempotency_key"
+      },
+      "effects": [
+        "EmailSent"
+      ],
+      "risk": "medium",
+      "security": {
+        "allowed_roles": [
+          "support_agent",
+          "ops_admin"
+        ],
+        "requires_approval": false
+      },
+      "deprecation": {
+        "status": "active",
+        "replaced_by": null
+      }
+    }
+  ],
+  "policies": [
+    {
+      "policy_id": "pol_support_defaults_v1",
+      "description": "Baseline support policies",
+      "rules": [
+        {
+          "id": "rule_max_tool_calls",
+          "type": "limit",
+          "target": "plan.controls.max_tool_calls",
+          "operator": "<=",
+          "value": 50,
+          "on_violation": "fail"
+        },
+        {
+          "id": "rule_side_effects_cap",
+          "type": "limit",
+          "target": "metrics.tool_calls_external",
+          "operator": "<=",
+          "value": 10,
+          "on_violation": "require_approval"
+        }
+      ]
+    }
+  ],
+  "tenant_overrides": {
+    "tenant_demo": {
+      "enabled_tools": [
+        "crm.get_customer",
+        "memory.search",
+        "ticket.create",
+        "ticket.add_comment",
+        "internal.llm.draft_reply",
+        "email.send"
+      ],
+      "enabled_actions": [
+        "act_crm_get_customer_v1",
+        "act_memory_search_v1",
+        "act_ticket_create_v1",
+        "act_ticket_add_comment_v1",
+        "act_draft_reply_v1",
+        "act_email_send_v1"
+      ],
+      "security_overrides": [
+        {
+          "action_id": "act_email_send_v1",
+          "set": [
+            {
+              "path": "/security/requires_approval",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    "tenant_enterprise_eu": {
+      "enabled_tools": [
+        "crm.get_customer",
+        "memory.search",
+        "ticket.create",
+        "ticket.add_comment",
+        "internal.llm.draft_reply",
+        "email.send"
+      ],
+      "enabled_actions": [
+        "act_crm_get_customer_v1",
+        "act_memory_search_v1",
+        "act_ticket_create_v1",
+        "act_ticket_add_comment_v1",
+        "act_draft_reply_v1",
+        "act_email_send_v1"
+      ],
+      "security_overrides": []
+    }
+  },
+  "deprecated": {
+    "actions": [],
+    "tools": []
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "type",
+    "goal",
+    "steps"
+  ],
+  "properties": {
+    "type": {
+      "const": "plan"
+    },
+    "goal": {
+      "type": "string"
+    },
+    "controls": {
+      "type": "object"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "step_id",
+          "action_id",
+          "args"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string"
+          },
+          "action_id": {
+            "type": "string"
+          },
+          "args": {
+            "type": "object"
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
