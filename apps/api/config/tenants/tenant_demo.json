@@ -1,0 +1,18 @@
+{
+  "tenant_id": "tenant_demo",
+  "roles_default": [
+    "support_agent"
+  ],
+  "limits": {
+    "max_tool_calls": 50,
+    "per_tool": {
+      "mcp:calendar/get_events": 10
+    },
+    "max_llm_calls": 20,
+    "max_cost_units": 500,
+    "llm_call_cost_units": 10,
+    "per_action": {}
+  },
+  "allowed_tools": null,
+  "allowed_actions": null
+}

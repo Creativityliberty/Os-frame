@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EventLogEntry",
+  "type": "object",
+  "required": [
+    "type",
+    "id",
+    "ts",
+    "name",
+    "data",
+    "trace"
+  ],
+  "properties": {
+    "type": {
+      "const": "event"
+    },
+    "id": {
+      "type": "string"
+    },
+    "ts": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "object"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "data": {
+      "type": "object"
+    },
+    "trace": {
+      "type": "object",
+      "required": [
+        "run_id"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string"
+        },
+        "step_id": {
+          "type": "string"
+        },
+        "tool_call_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

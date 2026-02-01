@@ -1,0 +1,6 @@
+from __future__ import annotations
+from typing import Any, Dict, List, Protocol
+
+class LLMPlanner(Protocol):
+    async def select_nodes(self, user_message: str, trees: List[Dict[str, Any]], policy_snippets: List[Dict[str, Any]]) -> List[str]: ...
+    async def build_plan(self, context_pack: Dict[str, Any]) -> Dict[str, Any]: ...

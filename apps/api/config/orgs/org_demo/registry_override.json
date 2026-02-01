@@ -1,0 +1,10 @@
+{
+  "roles": {
+    "support_agent": [
+      "runs:read",
+      "runs:write",
+      "approvals:write",
+      "registry:read"
+    ]
+  }
+}

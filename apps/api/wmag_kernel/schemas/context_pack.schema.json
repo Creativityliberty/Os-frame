@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ContextPack",
+  "type": "object",
+  "required": [
+    "type",
+    "pack_id",
+    "task",
+    "action_space"
+  ],
+  "properties": {
+    "type": {
+      "const": "context_pack"
+    },
+    "pack_id": {
+      "type": "string"
+    },
+    "tenant_id": {
+      "type": "string"
+    },
+    "task": {
+      "type": "object",
+      "required": [
+        "user_message"
+      ],
+      "properties": {
+        "user_message": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string"
+        },
+        "customer_ref": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "recent_events": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "kb_snippets": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "action_space": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "action_id",
+          "tool"
+        ],
+        "properties": {
+          "action_id": {
+            "type": "string"
+          },
+          "tool": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "limits": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

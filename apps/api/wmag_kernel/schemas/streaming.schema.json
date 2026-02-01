@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StreamingEvent",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "type",
+        "ts",
+        "task_id",
+        "run_id",
+        "state",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "const": "TaskStatusUpdateEvent"
+        },
+        "ts": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "string"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "meta": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    {
+      "type": "object",
+      "required": [
+        "type",
+        "ts",
+        "task_id",
+        "run_id",
+        "artifact_type",
+        "artifact"
+      ],
+      "properties": {
+        "type": {
+          "const": "TaskArtifactUpdateEvent"
+        },
+        "ts": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "string"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "artifact_type": {
+          "type": "string"
+        },
+        "artifact": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

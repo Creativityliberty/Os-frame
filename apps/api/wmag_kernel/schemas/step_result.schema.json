@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StepResult",
+  "type": "object",
+  "required": [
+    "step_id",
+    "status",
+    "attempts",
+    "tool",
+    "action_id",
+    "started_at",
+    "finished_at"
+  ],
+  "properties": {
+    "step_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "succeeded",
+        "failed"
+      ]
+    },
+    "attempts": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "tool": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "idempotency_key": {
+      "type": "string"
+    },
+    "cache_hit": {
+      "type": "boolean"
+    },
+    "output": {
+      "type": "object"
+    },
+    "error": {
+      "type": "object",
+      "required": [
+        "class",
+        "message"
+      ],
+      "properties": {
+        "class": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "started_at": {
+      "type": "string"
+    },
+    "finished_at": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

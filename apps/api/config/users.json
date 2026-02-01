@@ -1,0 +1,23 @@
+{
+  "keys": [
+    {
+      "api_key": "dev_admin_key",
+      "user_id": "u_admin",
+      "tenant_id": "tenant_demo",
+      "roles": [
+        "admin",
+        "support_agent"
+      ],
+      "org_id": "org_demo"
+    },
+    {
+      "api_key": "dev_agent_key",
+      "user_id": "u_agent",
+      "tenant_id": "tenant_demo",
+      "roles": [
+        "support_agent"
+      ],
+      "org_id": "org_demo"
+    }
+  ]
+}

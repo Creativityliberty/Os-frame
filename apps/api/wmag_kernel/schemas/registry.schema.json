@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "registry_id",
+    "schema_version",
+    "retry_classes",
+    "tool_contracts",
+    "actions"
+  ],
+  "properties": {
+    "registry_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "retry_classes": {
+      "type": "array"
+    },
+    "tool_contracts": {
+      "type": "array"
+    },
+    "actions": {
+      "type": "array"
+    },
+    "policies": {
+      "type": "array"
+    },
+    "tenant_overrides": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=aether
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: ./apps/api
+    depends_on:
+      - db
+    environment:
+      - USE_POSTGRES=1
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/aether
+      - CONFIG_DIR=/app/config
+      - REGISTRY_LAYERS_DIR=/app/config
+      - PUBLIC_API_BASE=/api
+      - CORS_ORIGINS=http://localhost:8080
+      - CORS_ALLOW_CREDENTIALS=1
+      - JWT_SECRET=dev_jwt_secret_change_me
+    volumes:
+      - ./apps/api/config:/app/config
+    command: ["uvicorn","app.main:app","--host","0.0.0.0","--port","8787"]
+
+  worker:
+    build: ./apps/api
+    depends_on:
+      - db
+    environment:
+      - USE_POSTGRES=1
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/aether
+      - CONFIG_DIR=/app/config
+      - REGISTRY_LAYERS_DIR=/app/config
+      - JWT_SECRET=dev_jwt_secret_change_me
+      - TENANT_MAX_CONCURRENCY=2
+      - WORKER_POLL_MS=300
+    volumes:
+      - ./apps/api/config:/app/config
+    command: ["python","-m","app.worker"]
+
+  web:
+    build: ./apps/web
+    depends_on:
+      - api
+    environment:
+      - VITE_API_BASE=/api
+    command: ["npm","run","dev","--","--host","0.0.0.0","--port","5173"]
+
+  nginx:
+    build: ./apps/nginx
+    depends_on:
+      - web
+      - api
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
